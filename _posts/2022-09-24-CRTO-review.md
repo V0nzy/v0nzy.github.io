@@ -2,7 +2,7 @@
 title: Certified Red Team Operator review
 date: 2022-09-24
 categories: [review]
-tags: [CRTO, AD, CobaltStrike]
+tags: [CRTO, AD, certificate]
 pin: false
 ---
 
