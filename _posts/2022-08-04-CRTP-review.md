@@ -22,7 +22,7 @@ The CRTP course consists of several videos presented by Nikhil Mittal, included 
 # About the Exam
 The exam is my experience is really fun! You can start the exam whenever you want. You should keep in mind that the support team is located in India and may have a different time zone, so they may have long response times. You will get 24 hours to exploit 5 machines that are all up to date. The only way to can exploit a machine is by using misconfigurations. After completing the exam you have another 48 hours to write a report which should have detailed steps on how you exploited the machines. I started my exam on 5 march, send my report on 6 March and on 10 March I received the good news that I successfully passed the CRTP! 🎉
 
-<img src="/assets/img/crtp.png">
+![_install](/assets/img/CRTP-review/crtp.png)
 
 The good thing about the exam is that it is not very CTF like, it could be a real-life scenario which in my opinion is a big plus. You can pass this exam using all the tools that are used throughout the course. Keep in mind that these tools are not pre-installed in the environment, you have to import them yourself. Despite being stuck on the exam for a few hours I think 24 hours is easily enough to pass the exam. Bloodhound is always your friend and has been my go-to in this exam! 🙃
 
@@ -40,7 +40,7 @@ If you want to also get the CRTP certification below are some of my tips that he
 Another good source of informatie is an official PentesterAcademy discord group I found. Instead of e-mailing the support team everytime you can also ask you questions [**here**](https://discord.gg/w5HHwDcfeZ). Besides that anoter good website called [**ired.team**](https://www.ired.team/) helped my alot to understand certain attacking techniques.
 
 *Example of what the front page of my report looked like:*
-<img src="/assets/img/rapport.png">
+![_install](/assets/img/CRTP-review/rapport.png)
 
 # So what’s next?
 Soo... after passing the CRTP exam, I am currently trying to get my hands on the eCTPX from eLearnSecurity. The eCPTX also focuses on Active Directory exploitation using Kali and C2 frameworks. I think I'll be busy for quite some time with the eCPTX because of the ginormous amount of learning material and lab objectives. I'll be posting on interesting topics of this certification once in a while.
