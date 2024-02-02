@@ -1,6 +1,6 @@
 ---
 title: Certified Azure Red Team Profesional review
-date: 2023-13-09
+date: 2023-09-13
 categories: [review]
 tags: [CARTP, Azure, review]
 pin: false
