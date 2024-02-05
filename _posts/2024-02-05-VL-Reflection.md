@@ -7,7 +7,7 @@ pin: false
 ---
 
 ## Vulnlab - Reflection
-Reflection is another chain from Vulnlab which goes into MSSQL exploitation, relaying and Resource-based Constrained Delegation (RBCD) abuse.
+This is another chain from Vulnlab which goes into MSSQL exploitation, relaying and Resource-based Constrained Delegation (RBCD) abuse.
 
 
 ## Targets
