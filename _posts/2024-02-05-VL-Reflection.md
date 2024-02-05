@@ -108,7 +108,7 @@ Netexec tells us that the credentials are valid on the DC, let's login again usi
 python3 mssqlclient.py ./'web_prod':'Tribesman201'@10.10.153.213
 ```
 And once again we have access to the prod database. After some quick enumeration I found the users table which contain two sets of credentials:
-![_install](/assets/img/VL-Reflection/initial_ad_creds.png.png)
+![_install](/assets/img/VL-Reflection/initial_ad_creds.png)
 
 I put the credentials into two seperate files called "users.txt" and "pass.txt" and checked if the credentials are valid using netexec:
 
@@ -126,7 +126,7 @@ nxc ldap 10.10.153.213 -u abbie.smith -p 'CMe1x+nlRaaWEw' -M MAQ
 ![_install](/assets/img/VL-Reflection/maq.png)
 
 Upon enumerating the MS01 machine I noticted that it has LAPS enabled. 
-![_install](/assets/img/VL-Reflection/laps.png)
+![_install](/assets/img/VL-Reflection/LAPS.png)
 Since we have GenericAll permissions on the computer this allows us the retrieve the Local Admininistrator Password of the MS01 
 computer. Using netexec I was able to dump the LAPS password of the computer:
 ```bash
