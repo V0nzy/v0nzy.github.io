@@ -25,7 +25,7 @@ I started off using some nmap scans and quickly noticed  that it was possible to
 
 I entered the share using null authentication and looked through the directories.
 
-![_install](/assets/img/VL-Intercept/null_session_dev2.png)
+![_install](/assets/img/VL-Intercept/null_session_dev_2.png)
 
 I noticed that the "readme.txt" file says that the share is checked regulary for updates for the application. This for me was a big indicator for forced authenticated using a file upload. I created a malcious .URL file:
 ```bash
