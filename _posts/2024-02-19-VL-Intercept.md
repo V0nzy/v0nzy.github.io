@@ -1,9 +1,17 @@
-## Vulnlab Chains - Intercept
+---
+title: Vulnlab Chain - Intercept
+date: 2024-02-19
+categories: [vulnlab]
+tags: [AD]
+pin: false
+---
+
+## Vulnlab Chain - Intercept
 Intercept is a hard rated chain which contains two machines WS01 and DC01. The chain starts with forced authentication using a file upload to grab a users hash. Using this used we performed the Resourced Based Contrained Delegation (RBCD) WebClient attack to escalate privileges. Finally using ESC7 we elevate privileges to Domain Admin.
 
 ![_install](/assets/img/VL-Intercept/intercept_slide.png)
 
-### Initial Access
+## Initial Access
 Added the following to the /etc/hosts file:
 ```bash
 10.10.185.69 intercept.vl
@@ -46,7 +54,7 @@ hashcat -a 0 -m 5600 hash.txt /opt/rockyou.txt
 This succesfully recovered the password which ended up being "Choclate1". 
 ![_install](/assets/img/VL-Intercept/cracked_hash.png)
 
-### Domain Enumeration
+## Domain Enumeration
 Now that we have a valid Domain user we can enumerate the domain using bloodhound. Let's run the python remote ingestor to collect some data:
 ```bash
 bloodhound.py -d intercept.vl -v --zip -c All -dc DC01.intercept.vl -ns 10.10.185.69 -u 'Kathryn.spencer' -p 'Chocolate1' --dns-timeout 10
