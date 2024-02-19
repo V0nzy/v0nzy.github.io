@@ -77,7 +77,7 @@ And also figured out that the Domain Controller doesn't have LDAP Signing enforc
 If the WebDAV service is also enabled we can perform an RBCD WebClient attack using coerced authentication such as PetitPotam. Lets check if the WebDAV service is active using netexec:
 ![_install](/assets/img/VL-Intercept/webdav_client.png)
 
-## RBCD to Local Administrator
+## RBCD WebClient Attack
 Now that we know that the WebDAV service is active on WS01, LDAP Signing is disabled on the DC, and we can add machine accounts to the domain, we can abuse these conditions in combination with coerced authentication to escalate privileges. However, when relaying our coercion and add RBCD permissions to WS01 the authenticated connection has to originate from a trusted intranet zone. Luckly for us by default the "Authenticated Users" group can create child objects on the ADIDNS zone. Lets start off the attack by create a new A-record which points to our machine using dnstool.py:
 ```bash
 dnstool.py -u 'intercept\kathryn.spencer' -p 'Chocolate1' -a add -r kali -d 10.8.0.49 10.10.185.69
