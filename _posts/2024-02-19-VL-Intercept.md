@@ -7,7 +7,7 @@ pin: false
 ---
 
 ## Vulnlab Chain - Intercept
-Intercept is a hard rated chain which contains two machines WS01 and DC01. The chain starts with forced authentication using a file upload to grab a users hash. Using this used we performed the Resourced Based Contrained Delegation (RBCD) WebClient attack to escalate privileges. Finally using ESC7 we elevate privileges to Domain Admin.
+Intercept is a hard rated chain which contains two machines WS01 and DC01. The chain starts with forced authentication using a file upload to grab a users hash. Using this user we performed the Resourced Based Contrained Delegation (RBCD) WebClient attack to escalate privileges. Finally using ESC7 we elevate privileges to Domain Admin.
 
 ![_install](/assets/img/VL-Intercept/intercept_slide.png)
 
