@@ -7,11 +7,11 @@ My name is Jarno, and I am a highly motivated individual with a positive and har
 
 I hold several certifications in the security and networking domains, including:
 
-- **Certified Professional Penetration Tester (eCPPT)**
-- **Offensive Security Certified Professional (OSCP)**
-- **Certified Red Team Professional (CRTP)**
-- **Certified Red Team Operator (CRTO)**
-- **Certified Azure Red Teaming Professional (CARTP)**
-- **Routing and Switching (R&S)**
-- **Cisco Routing and Switching (R&S)**
-- **Cisco Enterprise Networking, Security, and Automation (ENSA)**
+- Certified Professional Penetration Tester (eCPPT)
+- Offensive Security Certified Professional (OSCP)
+- Certified Red Team Professional (CRTP)
+- Certified Red Team Operator (CRTO)
+- Certified Azure Red Teaming Professional (CARTP)
+- Routing and Switching (R&S)
+- Cisco Routing and Switching (R&S)
+- Cisco Enterprise Networking, Security, and Automation (ENSA)
